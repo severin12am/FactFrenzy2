@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { facts } from './data/facts';
 import { Timer, Trophy, Brain, Crown, Share2 } from 'lucide-react';
 import { supabase } from './lib/supabase';
@@ -21,7 +21,8 @@ function App() {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
   const [lastIncorrectFact, setLastIncorrectFact] = useState<{ statement: string; isTrue: boolean } | null>(null);
-  const [nameInput, setNameInput] = useState(''); // New state for name input
+  const [nameInput, setNameInput] = useState('');
+  const leaderboardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({}); // Ref to store leaderboard entries
 
   const shareUrl = 'https://factfrenzy.info';
 
@@ -42,7 +43,7 @@ function App() {
         if (prev <= 1) {
           clearInterval(timer);
           setGameOver(true);
-          fetchLeaderboard(); // Update leaderboard when game ends
+          fetchLeaderboard();
           return 0;
         }
         return prev - 1;
@@ -53,27 +54,33 @@ function App() {
   }, [currentFactIndex, gameOver, isAnswered]);
 
   const updateLeaderboard = async (nickname: string) => {
-    if (!nickname) return; // Don't update if no name provided
-    // Fetch existing score for this nickname
+    if (!nickname) return;
     const { data: existing } = await supabase
       .from('leaderboard')
       .select('score')
       .eq('nickname', nickname)
       .single();
 
-    // Only upsert if new score is higher or no entry exists
     if (!existing || score > existing.score) {
       await supabase
         .from('leaderboard')
         .upsert({ nickname, score }, { onConflict: 'nickname' });
-      fetchLeaderboard();
     }
+    fetchLeaderboard();
+    setShowLeaderboard(true); // Open leaderboard after updating
+    // Scroll to the user's entry after leaderboard updates
+    setTimeout(() => {
+      const userEntry = leaderboardRefs.current[nickname];
+      if (userEntry) {
+        userEntry.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100); // Small delay to ensure leaderboard is rendered
   };
 
   const fetchLeaderboard = async () => {
     const { data } = await supabase
       .from('leaderboard')
-      .select('*')
+      .select('nickname, score') // Explicitly select only needed columns
       .order('score', { ascending: false })
       .limit(10);
     if (data) {
@@ -111,7 +118,7 @@ function App() {
         isTrue: shuffledFacts[currentFactIndex].isTrue,
       });
       setGameOver(true);
-      fetchLeaderboard(); // Update leaderboard when game ends due to wrong answer
+      fetchLeaderboard();
     }
   }, [currentFactIndex, gameOver, isAnswered, shuffledFacts]);
 
@@ -128,6 +135,7 @@ function App() {
     setIsAnswered(false);
     setLastAnswerCorrect(null);
     setLastIncorrectFact(null);
+    setNameInput(''); // Reset name input
   }, []);
 
   const handleCopy = () => {
@@ -168,7 +176,11 @@ function App() {
               </h2>
               <div className="space-y-2">
                 {leaderboard.map((entry, index) => (
-                  <div key={entry.nickname} className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                  <div
+                    key={entry.nickname}
+                    ref={(el) => (leaderboardRefs.current[entry.nickname] = el)}
+                    className="flex justify-between items-center p-2 bg-gray-50 rounded"
+                  >
                     <span className="font-semibold">#{index + 1} {entry.nickname}</span>
                     <span className="text-indigo-600">{entry.score}</span>
                   </div>
