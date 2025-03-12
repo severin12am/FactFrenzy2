@@ -157,7 +157,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-4 sm:p-6">
-      <div className="w-full mx-auto">
+      <div className="max-w-6xl mx-auto w-full">
         <div className="flex justify-between items-center mb-6 sm:mb-8 bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4">
           <button
             onClick={() => setShowLeaderboard(!showLeaderboard)}
@@ -168,9 +168,9 @@ function App() {
           </button>
         </div>
 
-        <div className="flex flex-col gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
           {showLeaderboard && (
-            <div className="bg-white rounded-xl shadow-2xl p-3 sm:p-6 w-full">
+            <div className="bg-white rounded-xl shadow-2xl p-3 sm:p-6 col-span-1">
               <h2 className="text-xl sm:text-3xl font-bold mb-3 sm:mb-4 flex items-center gap-2">
                 <Crown className="w-6 sm:w-8 h-6 sm:h-8 text-yellow-500" />
                 Top Players
@@ -181,7 +181,7 @@ function App() {
                     <div
                       key={entry.nickname}
                       ref={(el) => (leaderboardRefs.current[entry.nickname] = el)}
-                      className="flex justify-between items-center p-2 sm:p-3 bg-gray-50 rounded text-base sm:text-lg w-full"
+                      className="flex justify-between items-center p-2 sm:p-3 bg-gray-50 rounded text-base sm:text-lg"
                     >
                       <span className="font-semibold">#{index + 1} {entry.nickname}</span>
                       <span className="text-indigo-600">{entry.score}</span>
@@ -194,7 +194,7 @@ function App() {
             </div>
           )}
 
-          <div className="bg-white rounded-xl shadow-2xl p-3 sm:p-6 w-full">
+          <div className={`bg-white rounded-xl shadow-2xl p-3 sm:p-6 ${showLeaderboard ? 'col-span-1 sm:col-span-2' : 'col-span-1 sm:col-span-3'}`}>
             <div className="flex items-center justify-between mb-4 sm:mb-6">
               <div className="flex items-center gap-2 sm:gap-3">
                 <Trophy className="w-6 sm:w-8 h-6 sm:h-8 text-yellow-500" />
