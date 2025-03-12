@@ -257,7 +257,7 @@ function App() {
                       className={`bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center gap-2 ${copySuccess ? 'bg-green-700' : ''}`}
                     >
                       <Share2 className="w-5 h-5" />
-                      {copySuccess ? 'Copied!' : 'Copy'}
+                      {copySuccess ? 'Copied!' : 'Share'}
                     </button>
 
                     <TwitterShareButton
