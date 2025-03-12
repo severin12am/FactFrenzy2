@@ -163,21 +163,21 @@ function App() {
   }, []);
 
   const handleCopy = () => {
-    const text = lastIncorrectFact
-      ? `😢 I didn’t know that "${lastIncorrectFact.statement}" was ${lastIncorrectFact.isTrue ? 'true' : 'false'} and I scored ${score} points on FactFrenzy.info! Think you know more facts than me? 🧠`
-      : `🎉 I scored ${score} points on FactFrenzy.info! Think you know more facts than me? Try now! 🧠`;
-    navigator.clipboard.writeText(text);
-    setCopySuccess(true);
-    setTimeout(() => setCopySuccess(false), 2000);
-  };
+  const text = lastIncorrectFact
+    ? `🤔 Did you know that "${lastIncorrectFact.statement}" was ${lastIncorrectFact.isTrue ? 'true' : 'false'}? I scored ${score} points on FactFrenzy.info! Think you know more facts than me? 🧠`
+    : `🎉 I scored ${score} points on FactFrenzy.info! Think you know more facts than me? Try now! 🧠`;
+  navigator.clipboard.writeText(text);
+  setCopySuccess(true);
+  setTimeout(() => setCopySuccess(false), 2000);
+};
 
   const currentFact = shuffledFacts[currentFactIndex];
   if (!currentFact) return null;
 
   // Share text for social platforms (without URL in text)
   const shareText = lastIncorrectFact
-    ? `😢 I didn’t know that "${lastIncorrectFact.statement}" was ${lastIncorrectFact.isTrue ? 'true' : 'false'} and I scored ${score} points! Think you know more facts than me? 🧠`
-    : `🎉 I scored ${score} points! Think you know more facts than me? Try now! 🧠`;
+  ? `🤔 Did you know that "${lastIncorrectFact.statement}" was ${lastIncorrectFact.isTrue ? 'true' : 'false'}? I scored ${score} points! Think you know more facts than me? 🧠`
+  : `🎉 I scored ${score} points! Think you know more facts than me? Try now! 🧠`;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-4">
