@@ -2,6 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { facts } from './data/facts';
 import { Timer, Trophy, Brain, LogIn, LogOut, Crown, Share2 } from 'lucide-react';
 import { supabase } from './lib/supabase';
+import {
+  TwitterShareButton,
+  WhatsappShareButton,
+  FacebookShareButton,
+} from 'react-share';
+import { TwitterIcon, WhatsappIcon, FacebookIcon } from 'react-share';
 
 function App() {
   const [currentFactIndex, setCurrentFactIndex] = useState(0);
@@ -15,15 +21,16 @@ function App() {
   const [leaderboard, setLeaderboard] = useState<{ nickname: string; score: number }[]>([]);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
 
+  // Share URL and text
+  const shareUrl = 'https://factfrenzy.info';
+  const shareText = `🎉 I just scored ${score} points on FactFrenzy.info! Think you know more facts than me? Try now! 🧠`;
+
   // Initialize and shuffle facts with 50/50 distribution
   useEffect(() => {
     const trueFacts = facts.filter(f => f.isTrue);
     const falseFacts = facts.filter(f => !f.isTrue);
-    
-    // Take equal amounts of true and false facts
     const selectedTrue = trueFacts.sort(() => Math.random() - 0.5).slice(0, facts.length / 2);
     const selectedFalse = falseFacts.sort(() => Math.random() - 0.5).slice(0, facts.length / 2);
-    
     const shuffled = [...selectedTrue, ...selectedFalse].sort(() => Math.random() - 0.5);
     setShuffledFacts(shuffled);
   }, []);
@@ -70,12 +77,10 @@ function App() {
 
   const updateLeaderboard = async () => {
     if (!user?.email) return;
-    
     const nickname = user.email.split('@')[0];
     await supabase
       .from('leaderboard')
       .upsert({ nickname, score }, { onConflict: 'nickname' });
-      
     fetchLeaderboard();
   };
 
@@ -85,7 +90,6 @@ function App() {
       .select('*')
       .order('score', { ascending: false })
       .limit(10);
-    
     if (data) {
       setLeaderboard(data);
     }
@@ -236,16 +240,51 @@ function App() {
                   >
                     Play Again
                   </button>
-                  <button
-                    onClick={() => {
-                      const text = `🎉 I just scored ${score} points on FactFrenzy.info! Think you know facts than me? Try now! 🧠`;
-                      navigator.clipboard.writeText(text);
-                    }}
-                    className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center gap-2"
-                  >
-                    <Share2 className="w-5 h-5" />
-                    Share Score
-                  </button>
+                  <div className="flex gap-2">
+                    {/* Copy to Clipboard Button */}
+                    <button
+                      onClick={() => {
+                        const text = `🎉 I just scored ${score} points on FactFrenzy.info! Think you know more facts than me? Try now! 🧠`;
+                        navigator.clipboard.writeText(text);
+                        alert('Score copied to clipboard!');
+                      }}
+                      className="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center gap-2"
+                    >
+                      <Share2 className="w-5 h-5" />
+                      Copy
+                    </button>
+
+                    {/* Twitter Share Button */}
+                    <TwitterShareButton
+                      url="https://factfrenzy.info"
+                      title={`🎉 I just scored ${score} points on FactFrenzy.info! Think you know more facts than me? Try now! 🧠`}
+                      className="bg-blue-400 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-500 transition-colors flex items-center gap-2"
+                    >
+                      <TwitterIcon size={20} round={true} />
+                      Twitter
+                    </TwitterShareButton>
+
+                    {/* WhatsApp Share Button */}
+                    <WhatsappShareButton
+                      url="https://factfrenzy.info"
+                      title={`🎉 I just scored ${score} points on FactFrenzy.info! Think you know more facts than me? Try now! 🧠`}
+                      separator=" "
+                      className="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center gap-2"
+                    >
+                      <WhatsappIcon size={20} round={true} />
+                      WhatsApp
+                    </WhatsappShareButton>
+
+                    {/* Facebook Share Button */}
+                    <FacebookShareButton
+                      url="https://factfrenzy.info"
+                      quote={`🎉 I just scored ${score} points on FactFrenzy.info! Think you know more facts than me? Try now! 🧠`}
+                      className="bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-800 transition-colors flex items-center gap-2"
+                    >
+                      <FacebookIcon size={20} round={true} />
+                      Facebook
+                    </FacebookShareButton>
+                  </div>
                 </div>
               </div>
             ) : (
