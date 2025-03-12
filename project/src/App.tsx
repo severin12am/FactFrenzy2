@@ -23,6 +23,7 @@ function App() {
   const [lastIncorrectFact, setLastIncorrectFact] = useState<{ statement: string; isTrue: boolean } | null>(null);
   const [nameInput, setNameInput] = useState('');
   const leaderboardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const mainPanelRef = useRef<HTMLDivElement>(null);
 
   const shareUrl = 'https://factfrenzy.info';
 
@@ -199,7 +200,10 @@ function App() {
             </div>
           )}
 
-          <div className={`bg-white rounded-xl shadow-2xl p-3 sm:p-6 ${showLeaderboard ? 'col-span-1 sm:col-span-2' : 'col-span-1 sm:col-span-3'}`}>
+          <div
+            ref={mainPanelRef}
+            className={`bg-white rounded-xl shadow-2xl p-3 sm:p-6 ${showLeaderboard ? 'col-span-1 sm:col-span-2' : 'col-span-1 sm:col-span-3'}`}
+          >
             <div className="flex items-center justify-between mb-4 sm:mb-6">
               <div className="flex items-center gap-2 sm:gap-3">
                 <Trophy className="w-6 sm:w-8 h-6 sm:h-8 text-yellow-500" />
@@ -344,6 +348,22 @@ function App() {
               </>
             )}
           </div>
+        </div>
+
+        {/* Ad Panel */}
+        <div
+          className={`bg-gray-200 rounded-xl shadow-2xl p-3 sm:p-6 mt-6 sm:mt-8 ${
+            showLeaderboard ? 'col-span-1 sm:col-span-3' : 'col-span-1 sm:col-span-3'
+          }`}
+          style={{
+            width: mainPanelRef.current ? `${mainPanelRef.current.offsetWidth}px` : '100%',
+            height: mainPanelRef.current ? `${mainPanelRef.current.offsetHeight / 2}px` : 'auto',
+            minHeight: '150px', // Ensure a minimum height for visibility
+          }}
+        >
+          <p className="text-center text-gray-500 text-base sm:text-lg">
+            Ad Space (Placeholder)
+          </p>
         </div>
       </div>
     </div>
