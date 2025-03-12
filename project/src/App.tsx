@@ -21,7 +21,7 @@ function App() {
   const [leaderboard, setLeaderboard] = useState<{ nickname: string; score: number }[]>([]);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
-  const [lastIncorrectFact, setLastIncorrectFact] = useState<{ statement: string; isTrue: boolean } | null>(null); // New state for last incorrect fact
+  const [lastIncorrectFact, setLastIncorrectFact] = useState<{ statement: string; isTrue: boolean } | null>(null);
 
   // Share URL
   const shareUrl = 'https://factfrenzy.info';
@@ -121,7 +121,6 @@ function App() {
         setLastAnswerCorrect(null);
       }, 1000);
     } else {
-      // Store the last incorrect fact before ending the game
       setLastIncorrectFact({
         statement: shuffledFacts[currentFactIndex].statement,
         isTrue: shuffledFacts[currentFactIndex].isTrue,
@@ -160,7 +159,7 @@ function App() {
     setGameOver(false);
     setIsAnswered(false);
     setLastAnswerCorrect(null);
-    setLastIncorrectFact(null); // Reset last incorrect fact
+    setLastIncorrectFact(null);
   }, []);
 
   const handleCopy = () => {
@@ -175,10 +174,10 @@ function App() {
   const currentFact = shuffledFacts[currentFactIndex];
   if (!currentFact) return null;
 
-  // Share text for social platforms
+  // Share text for social platforms (without URL in text)
   const shareText = lastIncorrectFact
-    ? `😢 I didn’t know that "${lastIncorrectFact.statement}" was ${lastIncorrectFact.isTrue ? 'true' : 'false'} and I scored ${score} points on FactFrenzy.info! Think you know more facts than me? 🧠`
-    : `🎉 I scored ${score} points on FactFrenzy.info! Think you know more facts than me? Try now! 🧠`;
+    ? `😢 I didn’t know that "${lastIncorrectFact.statement}" was ${lastIncorrectFact.isTrue ? 'true' : 'false'} and I scored ${score} points! Think you know more facts than me? 🧠`
+    : `🎉 I scored ${score} points! Think you know more facts than me? Try now! 🧠`;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-4">
