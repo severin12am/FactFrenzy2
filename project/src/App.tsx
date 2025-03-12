@@ -238,7 +238,7 @@ function App() {
                   </button>
                   <button
                     onClick={() => {
-                      const text = `I scored ${score} points in True or False! Can you beat my score?`;
+                      const text = `🎉 I just scored ${score} points on FactFrenzy.info! Think you know facts than me? Try now! 🧠`;
                       navigator.clipboard.writeText(text);
                     }}
                     className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center gap-2"
