@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { facts } from './data/facts';
-import { Timer, Trophy, Brain, LogIn, LogOut, Crown, Share2 } from 'lucide-react';
+import { Timer, Trophy, Brain, Crown, Share2 } from 'lucide-react';
 import { supabase } from './lib/supabase';
 import {
   TwitterShareButton,
@@ -17,11 +17,11 @@ function App() {
   const [shuffledFacts, setShuffledFacts] = useState<typeof facts>([]);
   const [isAnswered, setIsAnswered] = useState(false);
   const [lastAnswerCorrect, setLastAnswerCorrect] = useState<boolean | null>(null);
-  const [user, setUser] = useState<{ email: string } | null>(null);
   const [leaderboard, setLeaderboard] = useState<{ nickname: string; score: number }[]>([]);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
   const [lastIncorrectFact, setLastIncorrectFact] = useState<{ statement: string; isTrue: boolean } | null>(null);
+  const [nameInput, setNameInput] = useState(''); // New state for name input
 
   const shareUrl = 'https://factfrenzy.info';
 
@@ -35,24 +35,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user?.email) {
-        setUser({ email: session.user.email });
-      }
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user?.email) {
-        setUser({ email: session.user.email });
-      } else {
-        setUser(null);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  useEffect(() => {
     if (gameOver || isAnswered) return;
 
     const timer = setInterval(() => {
@@ -60,9 +42,7 @@ function App() {
         if (prev <= 1) {
           clearInterval(timer);
           setGameOver(true);
-          if (user) {
-            updateLeaderboard();
-          }
+          fetchLeaderboard(); // Update leaderboard when game ends
           return 0;
         }
         return prev - 1;
@@ -72,13 +52,22 @@ function App() {
     return () => clearInterval(timer);
   }, [currentFactIndex, gameOver, isAnswered]);
 
-  const updateLeaderboard = async () => {
-    if (!user?.email) return;
-    const nickname = user.email.split('@')[0];
-    await supabase
+  const updateLeaderboard = async (nickname: string) => {
+    if (!nickname) return; // Don't update if no name provided
+    // Fetch existing score for this nickname
+    const { data: existing } = await supabase
       .from('leaderboard')
-      .upsert({ nickname, score }, { onConflict: 'nickname' });
-    fetchLeaderboard();
+      .select('score')
+      .eq('nickname', nickname)
+      .single();
+
+    // Only upsert if new score is higher or no entry exists
+    if (!existing || score > existing.score) {
+      await supabase
+        .from('leaderboard')
+        .upsert({ nickname, score }, { onConflict: 'nickname' });
+      fetchLeaderboard();
+    }
   };
 
   const fetchLeaderboard = async () => {
@@ -122,26 +111,9 @@ function App() {
         isTrue: shuffledFacts[currentFactIndex].isTrue,
       });
       setGameOver(true);
-      if (user) {
-        updateLeaderboard();
-      }
+      fetchLeaderboard(); // Update leaderboard when game ends due to wrong answer
     }
-  }, [currentFactIndex, gameOver, isAnswered, shuffledFacts, user]);
-
-  const handleLogin = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: window.location.origin
-      }
-    });
-    if (error) console.error('Error logging in:', error.message);
-  };
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-  };
+  }, [currentFactIndex, gameOver, isAnswered, shuffledFacts]);
 
   const resetGame = useCallback(() => {
     const trueFacts = facts.filter(f => f.isTrue);
@@ -185,29 +157,6 @@ function App() {
             <Crown className="w-6 h-6" />
             <span>Leaderboard</span>
           </button>
-          
-          <div className="flex items-center gap-4">
-            {user ? (
-              <>
-                <span className="text-white">{user.email.split('@')[0]}</span>
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 text-white hover:text-red-300 transition-colors"
-                >
-                  <LogOut className="w-5 h-5" />
-                  Logout
-                </button>
-              </>
-            ) : (
-              <button
-                onClick={handleLogin}
-                className="flex items-center gap-2 text-white hover:text-green-300 transition-colors"
-              >
-                <LogIn className="w-5 h-5" />
-                Login
-              </button>
-            )}
-          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -244,7 +193,7 @@ function App() {
               <div className="text-center">
                 <h2 className="text-3xl font-bold mb-4">Game Over!</h2>
                 <p className="text-xl mb-8">Final Score: {score}</p>
-                <div className="flex gap-4 justify-center">
+                <div className="flex flex-col items-center gap-4">
                   <button
                     onClick={resetGame}
                     className="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
@@ -284,6 +233,21 @@ function App() {
                     >
                       <FacebookIcon size={24} round={true} />
                     </FacebookShareButton>
+                  </div>
+                  <div className="mt-4 flex flex-col items-center gap-2">
+                    <input
+                      type="text"
+                      value={nameInput}
+                      onChange={(e) => setNameInput(e.target.value)}
+                      placeholder="Enter your name"
+                      className="border border-gray-300 rounded-lg px-3 py-2 w-full max-w-xs"
+                    />
+                    <button
+                      onClick={() => updateLeaderboard(nameInput)}
+                      className="bg-yellow-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-yellow-600 transition-colors"
+                    >
+                      Add to Leaderboard
+                    </button>
                   </div>
                 </div>
               </div>
