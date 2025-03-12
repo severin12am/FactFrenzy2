@@ -214,7 +214,25 @@ function App() {
             {gameOver ? (
               <div className="text-center">
                 <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">Game Over!</h2>
-                <p className="text-xl sm:text-2xl mb-4 sm:mb-6">Final Score: {score}</p>
+                <p className="text-xl sm:text-2xl mb-2 sm:mb-3">Final Score: {score}</p>
+                {lastIncorrectFact && (
+                  <div className="mb-4 sm:mb-6">
+                    <p className="text-lg sm:text-xl leading-relaxed text-gray-700">
+                      Last Fact: {lastIncorrectFact.statement}
+                    </p>
+                    <p className="text-base sm:text-lg text-gray-500">
+                      (This fact was {lastIncorrectFact.isTrue ? 'true' : 'false'})
+                    </p>
+                    <a
+                      href={getGoogleSearchLink(lastIncorrectFact.statement)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-indigo-600 hover:text-indigo-800 underline text-base sm:text-lg mt-1 sm:mt-2 inline-block"
+                    >
+                      link
+                    </a>
+                  </div>
+                )}
                 <div className="flex flex-col items-center gap-3 sm:gap-4">
                   <button
                     onClick={resetGame}
