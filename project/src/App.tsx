@@ -20,6 +20,7 @@ function App() {
   const [user, setUser] = useState<{ email: string } | null>(null);
   const [leaderboard, setLeaderboard] = useState<{ nickname: string; score: number }[]>([]);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false); // New state for copy feedback
 
   // Share URL and text
   const shareUrl = 'https://factfrenzy.info';
@@ -29,8 +30,11 @@ function App() {
   useEffect(() => {
     const trueFacts = facts.filter(f => f.isTrue);
     const falseFacts = facts.filter(f => !f.isTrue);
+    
+    // Take equal amounts of true and false facts
     const selectedTrue = trueFacts.sort(() => Math.random() - 0.5).slice(0, facts.length / 2);
     const selectedFalse = falseFacts.sort(() => Math.random() - 0.5).slice(0, facts.length / 2);
+    
     const shuffled = [...selectedTrue, ...selectedFalse].sort(() => Math.random() - 0.5);
     setShuffledFacts(shuffled);
   }, []);
@@ -77,10 +81,12 @@ function App() {
 
   const updateLeaderboard = async () => {
     if (!user?.email) return;
+    
     const nickname = user.email.split('@')[0];
     await supabase
       .from('leaderboard')
       .upsert({ nickname, score }, { onConflict: 'nickname' });
+      
     fetchLeaderboard();
   };
 
@@ -90,6 +96,7 @@ function App() {
       .select('*')
       .order('score', { ascending: false })
       .limit(10);
+    
     if (data) {
       setLeaderboard(data);
     }
@@ -155,6 +162,14 @@ function App() {
     setIsAnswered(false);
     setLastAnswerCorrect(null);
   }, []);
+
+  // New handler for copy with subtle feedback
+  const handleCopy = () => {
+    const text = `🎉 I just scored ${score} points on FactFrenzy.info! Think you know more facts than me? Try now! 🧠`;
+    navigator.clipboard.writeText(text);
+    setCopySuccess(true);
+    setTimeout(() => setCopySuccess(false), 2000); // Hide after 2 seconds
+  };
 
   const currentFact = shuffledFacts[currentFactIndex];
   if (!currentFact) return null;
@@ -241,17 +256,13 @@ function App() {
                     Play Again
                   </button>
                   <div className="flex gap-2">
-                    {/* Copy to Clipboard Button */}
+                    {/* Copy to Clipboard Button with Feedback */}
                     <button
-                      onClick={() => {
-                        const text = `🎉 I just scored ${score} points on FactFrenzy.info! Think you know more facts than me? Try now! 🧠`;
-                        navigator.clipboard.writeText(text);
-                        alert('Score copied to clipboard!');
-                      }}
-                      className="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center gap-2"
+                      onClick={handleCopy}
+                      className={`bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center gap-2 ${copySuccess ? 'bg-green-700' : ''}`}
                     >
                       <Share2 className="w-5 h-5" />
-                      Copy
+                      {copySuccess ? 'Copied!' : 'Copy'}
                     </button>
 
                     {/* Twitter Share Button */}
