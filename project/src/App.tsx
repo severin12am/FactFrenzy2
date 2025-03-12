@@ -23,10 +23,8 @@ function App() {
   const [copySuccess, setCopySuccess] = useState(false);
   const [lastIncorrectFact, setLastIncorrectFact] = useState<{ statement: string; isTrue: boolean } | null>(null);
 
-  // Share URL
   const shareUrl = 'https://factfrenzy.info';
 
-  // Initialize and shuffle facts with 50/50 distribution
   useEffect(() => {
     const trueFacts = facts.filter(f => f.isTrue);
     const falseFacts = facts.filter(f => !f.isTrue);
@@ -36,7 +34,6 @@ function App() {
     setShuffledFacts(shuffled);
   }, []);
 
-  // Auth listener
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user?.email) {
@@ -55,7 +52,6 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Timer logic
   useEffect(() => {
     if (gameOver || isAnswered) return;
 
@@ -163,26 +159,24 @@ function App() {
   }, []);
 
   const handleCopy = () => {
-  const text = lastIncorrectFact
-    ? `🤔 Did you know that "${lastIncorrectFact.statement}" was ${lastIncorrectFact.isTrue ? 'true' : 'false'}? I scored ${score} points on FactFrenzy.info! Think you know more facts than me? 🧠`
-    : `🎉 I scored ${score} points on FactFrenzy.info! Think you know more facts than me? Try now! 🧠`;
-  navigator.clipboard.writeText(text);
-  setCopySuccess(true);
-  setTimeout(() => setCopySuccess(false), 2000);
-};
+    const text = lastIncorrectFact
+      ? `🤔 Did you know that "${lastIncorrectFact.statement}" was ${lastIncorrectFact.isTrue ? 'true' : 'false'}? I scored ${score} points on FactFrenzy.info! Think you know more facts than me? 🧠`
+      : `🎉 I scored ${score} points on FactFrenzy.info! Think you know more facts than me? Try now! 🧠`;
+    navigator.clipboard.writeText(text);
+    setCopySuccess(true);
+    setTimeout(() => setCopySuccess(false), 2000);
+  };
 
   const currentFact = shuffledFacts[currentFactIndex];
   if (!currentFact) return null;
 
-  // Share text for social platforms (without URL in text)
   const shareText = lastIncorrectFact
-  ? `🤔 Did you know that "${lastIncorrectFact.statement}" was ${lastIncorrectFact.isTrue ? 'true' : 'false'}? I scored ${score} points! Think you know more facts than me? 🧠`
-  : `🎉 I scored ${score} points! Think you know more facts than me? Try now! 🧠`;
+    ? `🤔 Did you know that "${lastIncorrectFact.statement}" was ${lastIncorrectFact.isTrue ? 'true' : 'false'}? I scored ${score} points! Think you know more facts than me? 🧠`
+    : `🎉 I scored ${score} points! Think you know more facts than me? Try now! 🧠`;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-4">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <div className="flex justify-between items-center mb-8 bg-white/10 backdrop-blur-sm rounded-lg p-4">
           <button
             onClick={() => setShowLeaderboard(!showLeaderboard)}
@@ -216,9 +210,7 @@ function App() {
           </div>
         </div>
 
-        {/* Main Game Area */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Leaderboard Panel */}
           {showLeaderboard && (
             <div className="lg:col-span-1 bg-white rounded-xl shadow-2xl p-6">
               <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
@@ -236,7 +228,6 @@ function App() {
             </div>
           )}
 
-          {/* Game Panel */}
           <div className={`${showLeaderboard ? 'lg:col-span-2' : 'lg:col-span-3'} bg-white rounded-xl shadow-2xl p-8`}>
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-2">
@@ -261,7 +252,6 @@ function App() {
                     Play Again
                   </button>
                   <div className="flex gap-2">
-                    {/* Copy to Clipboard Button with Feedback */}
                     <button
                       onClick={handleCopy}
                       className={`bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center gap-2 ${copySuccess ? 'bg-green-700' : ''}`}
@@ -270,35 +260,29 @@ function App() {
                       {copySuccess ? 'Copied!' : 'Copy'}
                     </button>
 
-                    {/* Twitter Share Button */}
                     <TwitterShareButton
                       url={shareUrl}
                       title={shareText}
-                      className="bg-blue-400 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-500 transition-colors flex items-center gap-2"
+                      className="bg-blue-400 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-500 transition-colors flex items-center"
                     >
-                      <TwitterIcon size={20} round={true} />
-                      Twitter
+                      <TwitterIcon size={24} round={true} />
                     </TwitterShareButton>
 
-                    {/* WhatsApp Share Button */}
                     <WhatsappShareButton
                       url={shareUrl}
                       title={shareText}
                       separator=" "
-                      className="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center gap-2"
+                      className="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center"
                     >
-                      <WhatsappIcon size={20} round={true} />
-                      WhatsApp
+                      <WhatsappIcon size={24} round={true} />
                     </WhatsappShareButton>
 
-                    {/* Facebook Share Button */}
                     <FacebookShareButton
                       url={shareUrl}
                       quote={shareText}
-                      className="bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-800 transition-colors flex items-center gap-2"
+                      className="bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-800 transition-colors flex items-center"
                     >
-                      <FacebookIcon size={20} round={true} />
-                      Facebook
+                      <FacebookIcon size={24} round={true} />
                     </FacebookShareButton>
                   </div>
                 </div>
@@ -313,7 +297,6 @@ function App() {
                   <p className="text-lg leading-relaxed">{currentFact.statement}</p>
                 </div>
 
-                {/* True/False Buttons */}
                 <div className="grid grid-cols-2 gap-4">
                   <button
                     onClick={() => handleGuess(false)}
