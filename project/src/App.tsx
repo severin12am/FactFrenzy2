@@ -148,6 +148,11 @@ function App() {
     setTimeout(() => setCopySuccess(false), 2000);
   };
 
+  const getGoogleSearchLink = (statement: string) => {
+    const encodedStatement = encodeURIComponent(statement);
+    return `https://www.google.com/search?q=${encodedStatement}`;
+  };
+
   const currentFact = shuffledFacts[currentFactIndex];
   if (!currentFact) return null;
 
@@ -276,6 +281,14 @@ function App() {
                     <h2 className="text-xl sm:text-2xl font-semibold">Fact #{score + 1}</h2>
                   </div>
                   <p className="text-lg sm:text-xl leading-relaxed">{currentFact.statement}</p>
+                  <a
+                    href={getGoogleSearchLink(currentFact.statement)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-indigo-600 hover:text-indigo-800 underline text-base sm:text-lg mt-1 sm:mt-2 inline-block"
+                  >
+                    link
+                  </a>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 sm:gap-4">
