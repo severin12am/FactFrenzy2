@@ -54,28 +54,30 @@ function App() {
   }, [currentFactIndex, gameOver, isAnswered]);
 
   const updateLeaderboard = async (nickname: string) => {
-    if (!nickname) return;
-    const { data: existing } = await supabase
-      .from('leaderboard')
-      .select('score')
-      .eq('nickname', nickname)
-      .single();
+  if (!nickname) return;
+  const { data: existing } = await supabase
+    .from('leaderboard')
+    .select('score')
+    .eq('nickname', nickname)
+    .single();
 
-    if (!existing || score > existing.score) {
-      await supabase
-        .from('leaderboard')
-        .upsert({ nickname, score }, { onConflict: 'nickname' });
+  if (!existing || score > existing.score) {
+    const { error } = await supabase
+      .from('leaderboard')
+      .upsert({ nickname, score }, { onConflict: 'nickname' });
+    if (error) {
+      console.error('Error upserting leaderboard entry:', error.message);
     }
-    fetchLeaderboard();
-    setShowLeaderboard(true); // Open leaderboard after updating
-    // Scroll to the user's entry after leaderboard updates
-    setTimeout(() => {
-      const userEntry = leaderboardRefs.current[nickname];
-      if (userEntry) {
-        userEntry.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }, 100); // Small delay to ensure leaderboard is rendered
-  };
+  }
+  fetchLeaderboard();
+  setShowLeaderboard(true);
+  setTimeout(() => {
+    const userEntry = leaderboardRefs.current[nickname];
+    if (userEntry) {
+      userEntry.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, 100);
+};
 
   const fetchLeaderboard = async () => {
     const { data } = await supabase
