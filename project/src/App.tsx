@@ -20,21 +20,18 @@ function App() {
   const [user, setUser] = useState<{ email: string } | null>(null);
   const [leaderboard, setLeaderboard] = useState<{ nickname: string; score: number }[]>([]);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
-  const [copySuccess, setCopySuccess] = useState(false); // New state for copy feedback
+  const [copySuccess, setCopySuccess] = useState(false);
+  const [lastIncorrectFact, setLastIncorrectFact] = useState<{ statement: string; isTrue: boolean } | null>(null); // New state for last incorrect fact
 
-  // Share URL and text
+  // Share URL
   const shareUrl = 'https://factfrenzy.info';
-  const shareText = `🎉 I just scored ${score} points on FactFrenzy.info! Think you know more facts than me? Try now! 🧠`;
 
   // Initialize and shuffle facts with 50/50 distribution
   useEffect(() => {
     const trueFacts = facts.filter(f => f.isTrue);
     const falseFacts = facts.filter(f => !f.isTrue);
-    
-    // Take equal amounts of true and false facts
     const selectedTrue = trueFacts.sort(() => Math.random() - 0.5).slice(0, facts.length / 2);
     const selectedFalse = falseFacts.sort(() => Math.random() - 0.5).slice(0, facts.length / 2);
-    
     const shuffled = [...selectedTrue, ...selectedFalse].sort(() => Math.random() - 0.5);
     setShuffledFacts(shuffled);
   }, []);
@@ -81,12 +78,10 @@ function App() {
 
   const updateLeaderboard = async () => {
     if (!user?.email) return;
-    
     const nickname = user.email.split('@')[0];
     await supabase
       .from('leaderboard')
       .upsert({ nickname, score }, { onConflict: 'nickname' });
-      
     fetchLeaderboard();
   };
 
@@ -96,7 +91,6 @@ function App() {
       .select('*')
       .order('score', { ascending: false })
       .limit(10);
-    
     if (data) {
       setLeaderboard(data);
     }
@@ -127,6 +121,11 @@ function App() {
         setLastAnswerCorrect(null);
       }, 1000);
     } else {
+      // Store the last incorrect fact before ending the game
+      setLastIncorrectFact({
+        statement: shuffledFacts[currentFactIndex].statement,
+        isTrue: shuffledFacts[currentFactIndex].isTrue,
+      });
       setGameOver(true);
       if (user) {
         updateLeaderboard();
@@ -161,18 +160,25 @@ function App() {
     setGameOver(false);
     setIsAnswered(false);
     setLastAnswerCorrect(null);
+    setLastIncorrectFact(null); // Reset last incorrect fact
   }, []);
 
-  // New handler for copy with subtle feedback
   const handleCopy = () => {
-    const text = `🎉 I just scored ${score} points on FactFrenzy.info! Think you know more facts than me? Try now! 🧠`;
+    const text = lastIncorrectFact
+      ? `😢 I didn’t know that "${lastIncorrectFact.statement}" was ${lastIncorrectFact.isTrue ? 'true' : 'false'} and I scored ${score} points on FactFrenzy.info! Think you know more facts than me? 🧠`
+      : `🎉 I scored ${score} points on FactFrenzy.info! Think you know more facts than me? Try now! 🧠`;
     navigator.clipboard.writeText(text);
     setCopySuccess(true);
-    setTimeout(() => setCopySuccess(false), 2000); // Hide after 2 seconds
+    setTimeout(() => setCopySuccess(false), 2000);
   };
 
   const currentFact = shuffledFacts[currentFactIndex];
   if (!currentFact) return null;
+
+  // Share text for social platforms
+  const shareText = lastIncorrectFact
+    ? `😢 I didn’t know that "${lastIncorrectFact.statement}" was ${lastIncorrectFact.isTrue ? 'true' : 'false'} and I scored ${score} points on FactFrenzy.info! Think you know more facts than me? 🧠`
+    : `🎉 I scored ${score} points on FactFrenzy.info! Think you know more facts than me? Try now! 🧠`;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-4">
@@ -267,8 +273,8 @@ function App() {
 
                     {/* Twitter Share Button */}
                     <TwitterShareButton
-                      url="https://factfrenzy.info"
-                      title={`🎉 I just scored ${score} points on FactFrenzy.info! Think you know more facts than me? Try now! 🧠`}
+                      url={shareUrl}
+                      title={shareText}
                       className="bg-blue-400 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-500 transition-colors flex items-center gap-2"
                     >
                       <TwitterIcon size={20} round={true} />
@@ -277,8 +283,8 @@ function App() {
 
                     {/* WhatsApp Share Button */}
                     <WhatsappShareButton
-                      url="https://factfrenzy.info"
-                      title={`🎉 I just scored ${score} points on FactFrenzy.info! Think you know more facts than me? Try now! 🧠`}
+                      url={shareUrl}
+                      title={shareText}
                       separator=" "
                       className="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center gap-2"
                     >
@@ -288,8 +294,8 @@ function App() {
 
                     {/* Facebook Share Button */}
                     <FacebookShareButton
-                      url="https://factfrenzy.info"
-                      quote={`🎉 I just scored ${score} points on FactFrenzy.info! Think you know more facts than me? Try now! 🧠`}
+                      url={shareUrl}
+                      quote={shareText}
                       className="bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-800 transition-colors flex items-center gap-2"
                     >
                       <FacebookIcon size={20} round={true} />
