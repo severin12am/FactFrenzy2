@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <!-- Добавляем Content Security Policy для AdSense -->
-    <meta http-equiv="Content-Security-Policy" content="frame-src 'self' https://googlesyndication.com https://g.doubleclick.net https://pagead2.googlesyndication.com; script-src 'self' https://www.googletagmanager.com https://pagead2.googlesyndication.com 'unsafe-inline';">
+    <!-- Обновлённая Content Security Policy для AdSense и вашего домена -->
+    <meta http-equiv="Content-Security-Policy" content="frame-src 'self' https://googlesyndication.com https://g.doubleclick.net https://pagead2.googlesyndication.com; connect-src 'self' https://supabase.co https://googleads.g.doubleclick.net https://googlesyndication.com https://factfrenzy.info; script-src 'self' https://www.googletagmanager.com https://pagead2.googlesyndication.com 'unsafe-inline';">
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="description" content="FactFrenzy - Test your knowledge with this fun true or false challenge! Can you beat your friends' scores?" />
     <title>FactFrenzy - True or False Challenge</title>
@@ -29,7 +29,6 @@
           'ad_storage': consent ? 'granted' : 'denied',
           'analytics_storage': consent ? 'granted' : 'denied'
         });
-        // Для отладки: логируем изменение состояния
         console.log('Consent updated:', { ad_storage: consent ? 'granted' : 'denied', analytics_storage: consent ? 'granted' : 'denied' });
       }
 
@@ -81,7 +80,7 @@
     <ins class="adsbygoogle"
          style="display:block"
          data-ad-client="ca-pub-6717810154217301"
-         data-ad-slot="YOUR_AD_SLOT_ID_HERE"
+         data-ad-slot="YOUR_AD_SLOT_ID_HERE" <!-- Замените на реальный ID -->
          data-ad-format="auto"></ins>
     <script>
         (adsbygoogle = window.adsbygoogle || []).push({});
@@ -105,9 +104,9 @@
         // Показать баннер, если пользователь ещё не сделал выбор
         if (!localStorage.getItem('cookie-consent')) {
           banner.style.display = 'block';
-          console.log('Banner displayed'); // Для отладки
+          console.log('Banner displayed');
         } else {
-          console.log('Banner skipped, consent already given:', localStorage.getItem('cookie-consent')); // Для отладки
+          console.log('Banner skipped, consent already given:', localStorage.getItem('cookie-consent'));
         }
 
         // Принять cookies
