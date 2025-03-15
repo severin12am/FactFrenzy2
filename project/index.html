@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!-- Добавляем Content Security Policy для AdSense -->
+    <meta http-equiv="Content-Security-Policy" content="frame-src 'self' https://googlesyndication.com https://g.doubleclick.net https://pagead2.googlesyndication.com; script-src 'self' https://www.googletagmanager.com https://pagead2.googlesyndication.com 'unsafe-inline';">
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="description" content="FactFrenzy - Test your knowledge with this fun true or false challenge! Can you beat your friends' scores?" />
     <title>FactFrenzy - True or False Challenge</title>
@@ -17,8 +19,8 @@
 
       // Установка Consent Mode по умолчанию
       gtag('consent', 'default', {
-        'ad_storage': 'denied',    // Сбор данных для рекламы отключён по умолчанию
-        'analytics_storage': 'denied' // Сбор аналитических данных отключён по умолчанию
+        'ad_storage': 'denied',
+        'analytics_storage': 'denied'
       });
 
       // Функция для обновления согласия
@@ -27,6 +29,8 @@
           'ad_storage': consent ? 'granted' : 'denied',
           'analytics_storage': consent ? 'granted' : 'denied'
         });
+        // Для отладки: логируем изменение состояния
+        console.log('Consent updated:', { ad_storage: consent ? 'granted' : 'denied', analytics_storage: consent ? 'granted' : 'denied' });
       }
 
       gtag('config', 'G-P0MQQPCGVZ', { 'anonymize_ip': true });
@@ -86,7 +90,7 @@
 
     <!-- Ненавязчивый баннер согласия -->
     <div id="cookie-banner">
-      <p>I don`t have many sources of income so please accept: We use cookies for analytics and ads. <a href="/privacy.html">Learn more</a>.</p>
+      <p>We use cookies for analytics and ads. <a href="/privacy.html">Learn more</a>.</p>
       <button id="accept-cookies">Accept</button>
       <button id="reject-cookies" class="reject">Reject</button>
     </div>
@@ -101,6 +105,9 @@
         // Показать баннер, если пользователь ещё не сделал выбор
         if (!localStorage.getItem('cookie-consent')) {
           banner.style.display = 'block';
+          console.log('Banner displayed'); // Для отладки
+        } else {
+          console.log('Banner skipped, consent already given:', localStorage.getItem('cookie-consent')); // Для отладки
         }
 
         // Принять cookies
