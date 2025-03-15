@@ -290,7 +290,7 @@ function App() {
                       onClick={() => updateLeaderboard(nameInput)}
                       className="bg-yellow-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors text-base sm:text-lg"
                     >
-                      Add to Leaderboard
+                      Make me famous (add me to leaderboard)
                     </button>
                   </div>
                 </div>
