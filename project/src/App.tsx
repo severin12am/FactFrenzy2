@@ -313,13 +313,15 @@ function App() {
                     <p className="text-lg sm:text-xl leading-relaxed text-gray-700">
                       Last Fact: {lastIncorrectFact.statement}
                     </p>
-                    <div className="flex justify-center items-center gap-2 text-base sm:text-lg text-gray-500">
-                      <p>(This fact was {lastIncorrectFact.isTrue ? 'true' : 'false'})</p>
+                    <div className="flex justify-center items-center gap-2 text-lg sm:text-xl leading-relaxed">
+                      <p className="text-gray-500">
+                        (This fact was {lastIncorrectFact.isTrue ? 'true' : 'false'})
+                      </p>
                       <a
                         href={getGoogleSearchLink(lastIncorrectFact.statement)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-gray-500"
+                        className="text-indigo-600 hover:text-indigo-800 underline"
                       >
                         Learn More
                       </a>
