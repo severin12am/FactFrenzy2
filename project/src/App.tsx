@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { facts } from './facts'; // Adjust path as needed
+import { facts } from './data/facts'; // Updated to match your file structure
 import { Timer, Trophy, Brain, Crown, Share2 } from 'lucide-react';
-import { supabase } from './lib/supabase'; // Ensure this is set up correctly
+import { supabase } from './lib/supabase';
 import {
   TwitterShareButton,
   WhatsappShareButton,
   FacebookShareButton,
-  TwitterIcon,
-  WhatsappIcon,
-  FacebookIcon,
 } from 'react-share';
+import { TwitterIcon, WhatsappIcon, FacebookIcon } from 'react-share';
 
 function App() {
   const [currentFactIndex, setCurrentFactIndex] = useState(0);
@@ -39,7 +37,7 @@ function App() {
     return shuffled;
   };
 
-  // Random fact selection per category
+  // Random fact selection per category (using keyword-based filtering)
   const getRandomFacts = (categoryFacts: typeof facts, count: number) => {
     const shuffled = shuffleArray(categoryFacts);
     const result: typeof facts = [];
@@ -51,14 +49,14 @@ function App() {
     return result;
   };
 
-  // Initialize shuffled facts
+  // Initialize shuffled facts with category-based filtering
   useEffect(() => {
     const categories = {
-      science: facts.filter(f => f.category === "science"),
-      animals: facts.filter(f => f.category === "animals"),
-      history: facts.filter(f => f.category === "history"),
-      geography: facts.filter(f => f.category === "geography"),
-      technology: facts.filter(f => f.category === "technology"),
+      science: facts.filter(f => f.statement.includes("universe") || f.statement.includes("Earth") || f.statement.includes("water")),
+      animals: facts.filter(f => f.statement.includes("body") || f.statement.includes("bird") || f.statement.includes("snake")),
+      history: facts.filter(f => f.statement.includes("ancient") || f.statement.includes("war") || f.statement.includes("king")),
+      geography: facts.filter(f => f.statement.includes("mountain") || f.statement.includes("desert") || f.statement.includes("ocean")),
+      technology: facts.filter(f => f.statement.includes("computer") || f.statement.includes("radio") || f.statement.includes("phone"))
     };
 
     const targetPerCategory = 100; // Aim for ~100 per category
@@ -142,11 +140,11 @@ function App() {
         setScore((prev) => prev + 1);
         if (currentFactIndex >= shuffledFacts.length - 2) {
           const categories = {
-            science: facts.filter(f => f.category === "science"),
-            animals: facts.filter(f => f.category === "animals"),
-            history: facts.filter(f => f.category === "history"),
-            geography: facts.filter(f => f.category === "geography"),
-            technology: facts.filter(f => f.category === "technology"),
+            science: facts.filter(f => f.statement.includes("universe") || f.statement.includes("Earth") || f.statement.includes("water")),
+            animals: facts.filter(f => f.statement.includes("body") || f.statement.includes("bird") || f.statement.includes("snake")),
+            history: facts.filter(f => f.statement.includes("ancient") || f.statement.includes("war") || f.statement.includes("king")),
+            geography: facts.filter(f => f.statement.includes("mountain") || f.statement.includes("desert") || f.statement.includes("ocean")),
+            technology: facts.filter(f => f.statement.includes("computer") || f.statement.includes("radio") || f.statement.includes("phone"))
           };
           const targetPerCategory = 100;
           const selectedFacts = [
@@ -178,11 +176,31 @@ function App() {
   // Reset game
   const resetGame = useCallback(() => {
     const categories = {
-      science: facts.filter(f => f.category === "science"),
-      animals: facts.filter(f => f.category === "animals"),
-      history: facts.filter(f => f.category === "history"),
-      geography: facts.filter(f => f.category === "geography"),
-      technology: facts.filter(f => f.category === "technology"),
+      science: facts.filter(f => f.statement.includes("universe") || f.statement.includes("Earth") || f.statement.includes("water")),
+      animals: facts.filter(f => f.statement.includes("body") || f.statement.includes("bird") || f.statement.includes("snake")),
+      history: facts.filter(f => f.statement.includes("ancient") || f.statement.includes("war") || f.statement.includes("king")),
+      geography: facts.filter(f => f.statement.includes("mountain") || f.statement.includes("desert") || f.statement.includes("ocean")),
+      technology: facts.filter(f => f.statement.includes("computer") || f.statement.includes("radio") || f.statement.includes("phone"))
+    };
+
+    const shuffleArray = (array: any[]) => {
+      const shuffled = [...array];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    };
+
+    const getRandomFacts = (categoryFacts: typeof facts, count: number) => {
+      const shuffled = shuffleArray(categoryFacts);
+      const result: typeof facts = [];
+      for (let i = 0; i < shuffled.length && result.length < count; i++) {
+        if (Math.random() < 0.5) {
+          result.push(shuffled[i]);
+        }
+      }
+      return result;
     };
 
     const targetPerCategory = 100;
