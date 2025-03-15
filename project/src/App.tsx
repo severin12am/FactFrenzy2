@@ -149,7 +149,7 @@ function App() {
           const targetPerCategory = 100;
           const selectedFacts = [
             ...getRandomFacts(categories.science, targetPerCategory),
-            ...getRandomFacts(categories.animals, targetPerCategory), // Fixed typo: tagPerCategory -> targetPerCategory
+            ...getRandomFacts(categories.animals, targetPerCategory),
             ...getRandomFacts(categories.history, targetPerCategory),
             ...getRandomFacts(categories.geography, targetPerCategory),
             ...getRandomFacts(categories.technology, targetPerCategory),
@@ -279,7 +279,7 @@ function App() {
                     </div>
                   ))
                 ) : (
-                  <p className="text-gray-500 text-base sm:text-lg">Play one game and you will see!</p>
+                  <p className="text-gray-500 text-base sm:text-lg">No entries yet. Be the first!</p>
                 )}
               </div>
             </div>
@@ -303,27 +303,27 @@ function App() {
             {gameOver ? (
               <div className="text-center">
                 <div className="w-full max-w-md mx-auto mb-3 sm:mb-4">
-                  <h2 className="text-2xl sm:text-4xl font-bold">Game Over!</h2>
-                </div>
-                <div className="w-full max-w-md mx-auto mb-2 sm:mb-3">
-                  <p className="text-xl sm:text-2xl">Final Score: {score}</p>
+                  <div className="flex justify-center items-center gap-2 text-2xl sm:text-4xl font-bold">
+                    <h2>Game Over!</h2>
+                    <p>Final Score: {score}</p>
+                  </div>
                 </div>
                 {lastIncorrectFact && (
                   <div className="w-full max-w-md mx-auto mb-4 sm:mb-6">
                     <p className="text-lg sm:text-xl leading-relaxed text-gray-700">
                       Last Fact: {lastIncorrectFact.statement}
                     </p>
-                    <p className="text-base sm:text-lg text-gray-500">
-                      (This fact was {lastIncorrectFact.isTrue ? 'true' : 'false'})
-                    </p>
-                    <a
-                      href={getGoogleSearchLink(lastIncorrectFact.statement)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-indigo-600 hover:text-indigo-800 underline text-base sm:text-lg mt-1 sm:mt-2 inline-block"
-                    >
-                      Learn More
-                    </a>
+                    <div className="flex justify-center items-center gap-2 text-base sm:text-lg text-gray-500">
+                      <p>(This fact was {lastIncorrectFact.isTrue ? 'true' : 'false'})</p>
+                      <a
+                        href={getGoogleSearchLink(lastIncorrectFact.statement)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-500"
+                      >
+                        Learn More
+                      </a>
+                    </div>
                   </div>
                 )}
                 <div className="flex flex-col items-center gap-3 sm:gap-4">
