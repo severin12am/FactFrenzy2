@@ -297,7 +297,7 @@ function generateFacts(): Fact[] {
     { statement: "Bread was money in old Egypt.", isTrue: true },
     { statement: "Candles lit homes before bulbs.", isTrue: true },
     { statement: "Ketchup was sold as medicine in the 1830s.", isTrue: true },
-    { statement: "Shakespeare invented over 1,700 words we still use today, like "eyeball" and "swagger.", isTrue: true },
+    { statement: "Shakespeare invented over 1,700 words we still use today, like 'eyeball' and 'swagger.', isTrue: true },
     { statement: "Apples float because 25% of their volume is air.", isTrue: true },
     // False
     { statement: "Mayonnaise was sold as medicine in the 19th century.", isTrue: false },
