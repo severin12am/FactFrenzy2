@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { facts } from './data/facts'; // Updated to match your file structure
+import { facts } from './data/facts';
 import { Timer, Trophy, Brain, Crown, Share2 } from 'lucide-react';
 import { supabase } from './lib/supabase';
 import {
@@ -302,10 +302,14 @@ function App() {
 
             {gameOver ? (
               <div className="text-center">
-                <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">Game Over!</h2>
-                <p className="text-xl sm:text-2xl mb-2 sm:mb-3">Final Score: {score}</p>
+                <div className="w-full max-w-md mx-auto mb-3 sm:mb-4">
+                  <h2 className="text-2xl sm:text-4xl font-bold">Game Over!</h2>
+                </div>
+                <div className="w-full max-w-md mx-auto mb-2 sm:mb-3">
+                  <p className="text-xl sm:text-2xl">Final Score: {score}</p>
+                </div>
                 {lastIncorrectFact && (
-                  <div className="mb-4 sm:mb-6">
+                  <div className="w-full max-w-md mx-auto mb-4 sm:mb-6">
                     <p className="text-lg sm:text-xl leading-relaxed text-gray-700">
                       Last Fact: {lastIncorrectFact.statement}
                     </p>
@@ -323,56 +327,60 @@ function App() {
                   </div>
                 )}
                 <div className="flex flex-col items-center gap-3 sm:gap-4">
-                  <button
-                    onClick={resetGame}
-                    className="bg-indigo-600 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold hover:bg-indigo-700 transition-colors text-base sm:text-lg"
-                  >
-                    Play Again
-                  </button>
-                  <div className="flex gap-2 sm:gap-3">
+                  <div className="w-full max-w-md">
                     <button
-                      onClick={handleCopy}
-                      className={`bg-green-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center gap-2 sm:gap-3 ${copySuccess ? 'bg-green-700' : ''}`}
+                      onClick={resetGame}
+                      className="w-full bg-indigo-600 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold hover:bg-indigo-700 transition-colors text-base sm:text-lg"
                     >
-                      <Share2 className="w-5 sm:w-6 h-5 sm:h-6" />
-                      {copySuccess ? 'Copied!' : 'Share'}
+                      Play Again
                     </button>
-                    <TwitterShareButton
-                      url={shareUrl}
-                      title={shareText}
-                      className="bg-blue-400 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-blue-500 transition-colors flex items-center"
-                    >
-                      <TwitterIcon size={24} round={true} />
-                    </TwitterShareButton>
-                    <WhatsappShareButton
-                      url={shareUrl}
-                      title={shareText}
-                      separator=" "
-                      className="bg-green-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center"
-                    >
-                      <WhatsappIcon size={24} round={true} />
-                    </WhatsappShareButton>
-                    <FacebookShareButton
-                      url={shareUrl}
-                      quote={shareText}
-                      className="bg-blue-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors flex items-center"
-                    >
-                      <FacebookIcon size={24} round={true} />
-                    </FacebookShareButton>
                   </div>
-                  <div className="mt-3 sm:mt-4 flex flex-col items-center gap-2 sm:gap-3">
+                  <div className="w-full max-w-md">
+                    <div className="flex gap-2 sm:gap-3 justify-center">
+                      <button
+                        onClick={handleCopy}
+                        className={`bg-green-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center gap-2 sm:gap-3 ${copySuccess ? 'bg-green-700' : ''}`}
+                      >
+                        <Share2 className="w-5 sm:w-6 h-5 sm:h-6" />
+                        {copySuccess ? 'Copied!' : 'Share'}
+                      </button>
+                      <TwitterShareButton
+                        url={shareUrl}
+                        title={shareText}
+                        className="bg-blue-400 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-blue-500 transition-colors flex items-center"
+                      >
+                        <TwitterIcon size={24} round={true} />
+                      </TwitterShareButton>
+                      <WhatsappShareButton
+                        url={shareUrl}
+                        title={shareText}
+                        separator=" "
+                        className="bg-green-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center"
+                      >
+                        <WhatsappIcon size={24} round={true} />
+                      </WhatsappShareButton>
+                      <FacebookShareButton
+                        url={shareUrl}
+                        quote={shareText}
+                        className="bg-blue-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors flex items-center"
+                      >
+                        <FacebookIcon size={24} round={true} />
+                      </FacebookShareButton>
+                    </div>
+                  </div>
+                  <div className="w-full max-w-md mt-3 sm:mt-4 flex flex-col items-center gap-2 sm:gap-3">
                     <input
                       type="text"
                       value={nameInput}
                       onChange={(e) => setNameInput(e.target.value)}
                       placeholder="Enter your name"
-                      className="border border-gray-300 rounded-lg px-3 sm:px-4 py-2 sm:py-3 w-full max-w-md text-base sm:text-lg"
+                      className="w-full max-w-md border border-gray-300 rounded-lg px-3 sm:px-4 py-2 sm:py-3 text-base sm:text-lg"
                     />
                     <button
                       onClick={() => updateLeaderboard(nameInput)}
-                      className="bg-yellow-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors text-base sm:text-lg"
+                      className="w-full max-w-md bg-yellow-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors text-base sm:text-lg"
                     >
-                      Add to Leaderboard
+                      Add me to Leaderboard
                     </button>
                   </div>
                 </div>
