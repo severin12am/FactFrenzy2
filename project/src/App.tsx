@@ -279,7 +279,7 @@ function App() {
                     </div>
                   ))
                 ) : (
-                  <p className="text-gray-500 text-base sm:text-lg">No entries yet. Be the first!</p>
+                  <p className="text-gray-500 text-base sm:text-lg">Play one game and you will see!</p>
                 )}
               </div>
             </div>
