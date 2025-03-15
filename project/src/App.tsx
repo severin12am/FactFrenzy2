@@ -336,10 +336,10 @@ function App() {
                     </button>
                   </div>
                   <div className="w-full max-w-md">
-                    <div className="flex gap-2 sm:gap-3 justify-center">
+                    <div className="flex gap-2 sm:gap-3">
                       <button
                         onClick={handleCopy}
-                        className={`bg-green-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center gap-2 sm:gap-3 ${copySuccess ? 'bg-green-700' : ''}`}
+                        className={`flex-1 bg-green-600 text-white py-2 sm:py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2 sm:gap-3 ${copySuccess ? 'bg-green-700' : ''}`}
                       >
                         <Share2 className="w-5 sm:w-6 h-5 sm:h-6" />
                         {copySuccess ? 'Copied!' : 'Share'}
@@ -347,7 +347,7 @@ function App() {
                       <TwitterShareButton
                         url={shareUrl}
                         title={shareText}
-                        className="bg-blue-400 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-blue-500 transition-colors flex items-center"
+                        className="flex-1 bg-blue-400 text-white py-2 sm:py-3 rounded-lg font-semibold hover:bg-blue-500 transition-colors flex items-center justify-center"
                       >
                         <TwitterIcon size={24} round={true} />
                       </TwitterShareButton>
@@ -355,14 +355,14 @@ function App() {
                         url={shareUrl}
                         title={shareText}
                         separator=" "
-                        className="bg-green-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center"
+                        className="flex-1 bg-green-500 text-white py-2 sm:py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center justify-center"
                       >
                         <WhatsappIcon size={24} round={true} />
-                      </WhatsappShareButton>
+                      </TwitterShareButton>
                       <FacebookShareButton
                         url={shareUrl}
                         quote={shareText}
-                        className="bg-blue-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors flex items-center"
+                        className="flex-1 bg-blue-700 text-white py-2 sm:py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors flex items-center justify-center"
                       >
                         <FacebookIcon size={24} round={true} />
                       </FacebookShareButton>
