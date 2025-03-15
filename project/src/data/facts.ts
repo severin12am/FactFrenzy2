@@ -67,7 +67,7 @@ function generateFacts(): Fact[] {
     { statement: "Some planets rain diamonds.", isTrue: true },
     { statement: "The internet weighs about as much as a strawberry.", isTrue: true },
     { statement: "Water conducts electricity only because of impurities—pure water is an insulator.", isTrue: true },
-    { statement: "The first computer "bug" was an actual insect stuck in a relay.", isTrue: true },
+    { statement: "The first computer 'bug' was an actual insect stuck in a relay.", isTrue: true },
     { statement: "Your smartphone has more computing power than the systems that landed humans on the Moon.", isTrue: true },
     { statement: "You can fit all the planets in our solar system between Earth and the Moon with room to spare.", isTrue: true },
     { statement: "A single lightning bolt could power a city for minutes.", isTrue: true },
