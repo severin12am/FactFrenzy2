@@ -282,7 +282,7 @@ function generateFacts(): Fact[] {
     { statement: "Inventors made the first wheels.", isTrue: true },
     { statement: "Bards told stories with songs.", isTrue: true },
     { statement: "Cleopatra lived closer in time to the Moon landing than to the building of the Great Pyramid.", isTrue: true },
-    { statement: "A "moment" historically meant 90 seconds.", isTrue: true },
+    { statement: "A 'moment' historically meant 90 seconds.", isTrue: true },
     { statement: "Doctors used plants to cure sickness.", isTrue: true },
     { statement: "The oldest known "your mom" joke dates back to Babylonian times, around 1500 BCE.", isTrue: true },
     { statement: "The longest place name in the world has 85 letters and is in New Zealand.", isTrue: true },
