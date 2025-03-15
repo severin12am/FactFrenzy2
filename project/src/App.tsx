@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { facts } from './data/facts';
+import { facts } from './facts'; // Adjust path as needed
 import { Timer, Trophy, Brain, Crown, Share2 } from 'lucide-react';
-import { supabase } from './lib/supabase';
+import { supabase } from './lib/supabase'; // Ensure this is set up correctly
 import {
   TwitterShareButton,
   WhatsappShareButton,
   FacebookShareButton,
+  TwitterIcon,
+  WhatsappIcon,
+  FacebookIcon,
 } from 'react-share';
-import { TwitterIcon, WhatsappIcon, FacebookIcon } from 'react-share';
 
 function App() {
   const [currentFactIndex, setCurrentFactIndex] = useState(0);
@@ -27,15 +29,51 @@ function App() {
 
   const shareUrl = 'https://factfrenzy.info';
 
+  // Fisher-Yates shuffle function
+  const shuffleArray = (array: any[]) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  // Random fact selection per category
+  const getRandomFacts = (categoryFacts: typeof facts, count: number) => {
+    const shuffled = shuffleArray(categoryFacts);
+    const result: typeof facts = [];
+    for (let i = 0; i < shuffled.length && result.length < count; i++) {
+      if (Math.random() < 0.5) { // 50% chance to include each fact
+        result.push(shuffled[i]);
+      }
+    }
+    return result;
+  };
+
+  // Initialize shuffled facts
   useEffect(() => {
-    const trueFacts = facts.filter(f => f.isTrue);
-    const falseFacts = facts.filter(f => !f.isTrue);
-    const selectedTrue = trueFacts.sort(() => Math.random() - 0.5).slice(0, facts.length / 2);
-    const selectedFalse = falseFacts.sort(() => Math.random() - 0.5).slice(0, facts.length / 2);
-    const shuffled = [...selectedTrue, ...selectedFalse].sort(() => Math.random() - 0.5);
-    setShuffledFacts(shuffled);
+    const categories = {
+      science: facts.filter(f => f.category === "science"),
+      animals: facts.filter(f => f.category === "animals"),
+      history: facts.filter(f => f.category === "history"),
+      geography: facts.filter(f => f.category === "geography"),
+      technology: facts.filter(f => f.category === "technology"),
+    };
+
+    const targetPerCategory = 100; // Aim for ~100 per category
+    const selectedFacts = [
+      ...getRandomFacts(categories.science, targetPerCategory),
+      ...getRandomFacts(categories.animals, targetPerCategory),
+      ...getRandomFacts(categories.history, targetPerCategory),
+      ...getRandomFacts(categories.geography, targetPerCategory),
+      ...getRandomFacts(categories.technology, targetPerCategory),
+    ];
+
+    setShuffledFacts(shuffleArray(selectedFacts));
   }, []);
 
+  // Timer logic
   useEffect(() => {
     if (gameOver || isAnswered) return;
 
@@ -54,6 +92,7 @@ function App() {
     return () => clearInterval(timer);
   }, [currentFactIndex, gameOver, isAnswered]);
 
+  // Leaderboard functions
   const updateLeaderboard = async (nickname: string) => {
     if (!nickname) return;
     const { data: existing } = await supabase
@@ -90,6 +129,7 @@ function App() {
     }
   };
 
+  // Handle user guess
   const handleGuess = useCallback((guess: boolean) => {
     if (gameOver || isAnswered) return;
 
@@ -101,11 +141,22 @@ function App() {
       setTimeout(() => {
         setScore((prev) => prev + 1);
         if (currentFactIndex >= shuffledFacts.length - 2) {
-          const trueFacts = facts.filter(f => f.isTrue);
-          const falseFacts = facts.filter(f => !f.isTrue);
-          const selectedTrue = trueFacts.sort(() => Math.random() - 0.5).slice(0, facts.length / 2);
-          const selectedFalse = falseFacts.sort(() => Math.random() - 0.5).slice(0, facts.length / 2);
-          setShuffledFacts([...selectedTrue, ...selectedFalse].sort(() => Math.random() - 0.5));
+          const categories = {
+            science: facts.filter(f => f.category === "science"),
+            animals: facts.filter(f => f.category === "animals"),
+            history: facts.filter(f => f.category === "history"),
+            geography: facts.filter(f => f.category === "geography"),
+            technology: facts.filter(f => f.category === "technology"),
+          };
+          const targetPerCategory = 100;
+          const selectedFacts = [
+            ...getRandomFacts(categories.science, targetPerCategory),
+            ...getRandomFacts(categories.animals, targetPerCategory),
+            ...getRandomFacts(categories.history, targetPerCategory),
+            ...getRandomFacts(categories.geography, targetPerCategory),
+            ...getRandomFacts(categories.technology, targetPerCategory),
+          ];
+          setShuffledFacts(shuffleArray(selectedFacts));
           setCurrentFactIndex(0);
         } else {
           setCurrentFactIndex((prev) => prev + 1);
@@ -124,12 +175,26 @@ function App() {
     }
   }, [currentFactIndex, gameOver, isAnswered, shuffledFacts]);
 
+  // Reset game
   const resetGame = useCallback(() => {
-    const trueFacts = facts.filter(f => f.isTrue);
-    const falseFacts = facts.filter(f => !f.isTrue);
-    const selectedTrue = trueFacts.sort(() => Math.random() - 0.5).slice(0, facts.length / 2);
-    const selectedFalse = falseFacts.sort(() => Math.random() - 0.5).slice(0, facts.length / 2);
-    setShuffledFacts([...selectedTrue, ...selectedFalse].sort(() => Math.random() - 0.5));
+    const categories = {
+      science: facts.filter(f => f.category === "science"),
+      animals: facts.filter(f => f.category === "animals"),
+      history: facts.filter(f => f.category === "history"),
+      geography: facts.filter(f => f.category === "geography"),
+      technology: facts.filter(f => f.category === "technology"),
+    };
+
+    const targetPerCategory = 100;
+    const selectedFacts = [
+      ...getRandomFacts(categories.science, targetPerCategory),
+      ...getRandomFacts(categories.animals, targetPerCategory),
+      ...getRandomFacts(categories.history, targetPerCategory),
+      ...getRandomFacts(categories.geography, targetPerCategory),
+      ...getRandomFacts(categories.technology, targetPerCategory),
+    ];
+
+    setShuffledFacts(shuffleArray(selectedFacts));
     setCurrentFactIndex(0);
     setScore(0);
     setTimeLeft(7);
@@ -140,6 +205,7 @@ function App() {
     setNameInput('');
   }, []);
 
+  // Copy to clipboard
   const handleCopy = () => {
     const text = lastIncorrectFact
       ? `🤔 Did you know that "${lastIncorrectFact.statement}" was ${lastIncorrectFact.isTrue ? 'true' : 'false'}? I scored ${score} points on FactFrenzy.info! Think you know more facts than me? 🧠`
@@ -149,6 +215,7 @@ function App() {
     setTimeout(() => setCopySuccess(false), 2000);
   };
 
+  // Google search link
   const getGoogleSearchLink = (statement: string) => {
     const encodedStatement = encodeURIComponent(statement);
     return `https://www.google.com/search?q=${encodedStatement}`;
@@ -233,7 +300,7 @@ function App() {
                       rel="noopener noreferrer"
                       className="text-indigo-600 hover:text-indigo-800 underline text-base sm:text-lg mt-1 sm:mt-2 inline-block"
                     >
-                      link
+                      Learn More
                     </a>
                   </div>
                 )}
@@ -252,30 +319,27 @@ function App() {
                       <Share2 className="w-5 sm:w-6 h-5 sm:h-6" />
                       {copySuccess ? 'Copied!' : 'Share'}
                     </button>
-
                     <TwitterShareButton
                       url={shareUrl}
                       title={shareText}
                       className="bg-blue-400 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-blue-500 transition-colors flex items-center"
                     >
-                      <TwitterIcon size={24} sm:size={32} round={true} />
+                      <TwitterIcon size={24} round={true} />
                     </TwitterShareButton>
-
                     <WhatsappShareButton
                       url={shareUrl}
                       title={shareText}
                       separator=" "
                       className="bg-green-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center"
                     >
-                      <WhatsappIcon size={24} sm:size={32} round={true} />
+                      <WhatsappIcon size={24} round={true} />
                     </WhatsappShareButton>
-
                     <FacebookShareButton
                       url={shareUrl}
                       quote={shareText}
                       className="bg-blue-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors flex items-center"
                     >
-                      <FacebookIcon size={24} sm:size={32} round={true} />
+                      <FacebookIcon size={24} round={true} />
                     </FacebookShareButton>
                   </div>
                   <div className="mt-3 sm:mt-4 flex flex-col items-center gap-2 sm:gap-3">
@@ -290,7 +354,7 @@ function App() {
                       onClick={() => updateLeaderboard(nameInput)}
                       className="bg-yellow-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors text-base sm:text-lg"
                     >
-                      Make me famous (add me to leaderboard)
+                      Add to Leaderboard
                     </button>
                   </div>
                 </div>
@@ -309,7 +373,7 @@ function App() {
                     rel="noopener noreferrer"
                     className="text-indigo-600 hover:text-indigo-800 underline text-base sm:text-lg mt-1 sm:mt-2 inline-block"
                   >
-                    link
+                    Learn More
                   </a>
                 </div>
 
@@ -339,9 +403,11 @@ function App() {
                 </div>
 
                 {lastAnswerCorrect !== null && (
-                  <div className={`mt-2 sm:mt-4 text-center font-semibold text-base sm:text-lg ${
-                    lastAnswerCorrect ? 'text-green-600' : 'text-red-600'
-                  }`}>
+                  <div
+                    className={`mt-2 sm:mt-4 text-center font-semibold text-base sm:text-lg ${
+                      lastAnswerCorrect ? 'text-green-600' : 'text-red-600'
+                    }`}
+                  >
                     {lastAnswerCorrect ? 'Correct!' : 'Wrong!'}
                   </div>
                 )}
@@ -350,7 +416,6 @@ function App() {
           </div>
         </div>
 
-        {/* Ad Panel */}
         <div
           className={`bg-gray-200 rounded-xl shadow-2xl p-3 sm:p-6 mt-6 sm:mt-8 ${
             showLeaderboard ? 'col-span-1 sm:col-span-3' : 'col-span-1 sm:col-span-3'
@@ -358,7 +423,7 @@ function App() {
           style={{
             width: mainPanelRef.current ? `${mainPanelRef.current.offsetWidth}px` : '100%',
             height: mainPanelRef.current ? `${mainPanelRef.current.offsetHeight / 2}px` : 'auto',
-            minHeight: '150px', // Ensure a minimum height for visibility
+            minHeight: '150px',
           }}
         >
           <p className="text-center text-gray-500 text-base sm:text-lg">
