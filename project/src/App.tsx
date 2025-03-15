@@ -149,7 +149,7 @@ function App() {
           const targetPerCategory = 100;
           const selectedFacts = [
             ...getRandomFacts(categories.science, targetPerCategory),
-            ...getRandomFacts(categories.animals, targetPerCategory),
+            ...getRandomFacts(categories.animals, tagPerCategory),
             ...getRandomFacts(categories.history, targetPerCategory),
             ...getRandomFacts(categories.geography, targetPerCategory),
             ...getRandomFacts(categories.technology, targetPerCategory),
@@ -187,7 +187,7 @@ function App() {
       const shuffled = [...array];
       for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        [shuffled[i], shuffled[j] = [shuffled[j], shuffled[i]];
       }
       return shuffled;
     };
@@ -358,7 +358,7 @@ function App() {
                         className="flex-1 bg-green-500 text-white py-2 sm:py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center justify-center"
                       >
                         <WhatsappIcon size={24} round={true} />
-                      </TwitterShareButton>
+                      </WhatsappShareButton>
                       <FacebookShareButton
                         url={shareUrl}
                         quote={shareText}
