@@ -284,7 +284,7 @@ function generateFacts(): Fact[] {
     { statement: "Cleopatra lived closer in time to the Moon landing than to the building of the Great Pyramid.", isTrue: true },
     { statement: "A 'moment' historically meant 90 seconds.", isTrue: true },
     { statement: "Doctors used plants to cure sickness.", isTrue: true },
-    { statement: "The oldest known "your mom" joke dates back to Babylonian times, around 1500 BCE.", isTrue: true },
+    { statement: "The oldest known 'your mom' joke dates back to Babylonian times, around 1500 BCE.", isTrue: true },
     { statement: "The longest place name in the world has 85 letters and is in New Zealand.", isTrue: true },
     { statement: "Voyager 1, launched in 1977, is the farthest human-made object from Earth and still sends signals from 25 billion kilometers away.", isTrue: true },
     { statement: "Oxford University is older than the Aztec Empire .", isTrue: true },
