@@ -14,6 +14,21 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
+
+      // Установка Consent Mode по умолчанию
+      gtag('consent', 'default', {
+        'ad_storage': 'denied',    // Сбор данных для рекламы отключён по умолчанию
+        'analytics_storage': 'denied' // Сбор аналитических данных отключён по умолчанию
+      });
+
+      // Функция для обновления согласия
+      function setConsent(consent) {
+        gtag('consent', 'update', {
+          'ad_storage': consent ? 'granted' : 'denied',
+          'analytics_storage': consent ? 'granted' : 'denied'
+        });
+      }
+
       gtag('config', 'G-P0MQQPCGVZ', { 'anonymize_ip': true });
     </script>
     <style>
@@ -77,7 +92,7 @@
     </div>
 
     <script>
-      // Логика баннера
+      // Логика баннера с Consent Mode
       document.addEventListener('DOMContentLoaded', () => {
         const banner = document.getElementById('cookie-banner');
         const acceptButton = document.getElementById('accept-cookies');
@@ -90,12 +105,14 @@
 
         // Принять cookies
         acceptButton.addEventListener('click', () => {
+          setConsent(true);
           localStorage.setItem('cookie-consent', 'accepted');
           banner.style.display = 'none';
         });
 
         // Отклонить cookies
         rejectButton.addEventListener('click', () => {
+          setConsent(false);
           localStorage.setItem('cookie-consent', 'rejected');
           banner.style.display = 'none';
         });
