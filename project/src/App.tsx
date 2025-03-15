@@ -344,7 +344,7 @@ function App() {
                         className={`flex-1 bg-green-600 text-white py-2 sm:py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2 sm:gap-3 ${copySuccess ? 'bg-green-700' : ''}`}
                       >
                         <Share2 className="w-5 sm:w-6 h-5 sm:h-6" />
-                        {copySuccess ? 'Copied!' : 'Share'}
+                        {copySuccess ? 'Copied!' : 'Tell my friends'}
                       </button>
                       <TwitterShareButton
                         url={shareUrl}
