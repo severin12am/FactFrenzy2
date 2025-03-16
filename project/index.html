@@ -1,11 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <!-- Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="frame-src *; connect-src *; script-src * 'unsafe-inline' 'unsafe-eval';" />
-    <link rel="icon" type="image/png" href="/assets/favicon-HwmefNFk.png" />
+    <meta http-equiv="Content-Security-Policy" content="
+      frame-src 'self' https://googlesyndication.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://g.doubleclick.net https://pubads.g.doubleclick.net https://partner.googleadservices.com https://www.google.com;
+      connect-src 'self' https://supabase.co https://uwursdathnpwsiztdxzu.supabase.co https://googleads.g.doubleclick.net https://*.googlesyndication.com https://factfrenzy.info https://ep1.adtrafficquality.google;
+      script-src 'self' https://www.googletagmanager.com https://*.googlesyndication.com 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com;
+      script-src-elem 'self' https://www.googletagmanager.com https://*.googlesyndication.com 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com;" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="description" content="FactFrenzy - Test your knowledge with this fun true or false challenge! Can you beat your friends' scores?" />
     <title>FactFrenzy - True or False Challenge</title>
     <!-- Google AdSense -->
@@ -14,33 +18,28 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-P0MQQPCGVZ"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
+      function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      // Default Consent Mode
+      // Установка Consent Mode по умолчанию
       gtag('consent', 'default', {
         'ad_storage': 'denied',
         'analytics_storage': 'denied'
       });
 
-      // Function to update consent
+      // Функция для обновления согласия
       function setConsent(consent) {
         gtag('consent', 'update', {
           'ad_storage': consent ? 'granted' : 'denied',
           'analytics_storage': consent ? 'granted' : 'denied'
         });
         console.log('Consent updated:', { ad_storage: consent ? 'granted' : 'denied', analytics_storage: consent ? 'granted' : 'denied' });
-        // Force ad refresh after consent
-        if (consent && window.adsbygoogle) {
-          (adsbygoogle = window.adsbygoogle || []).push({});
-          console.log('AdSense refreshed after consent granted');
-        }
       }
 
       gtag('config', 'G-P0MQQPCGVZ', { 'anonymize_ip': true });
     </script>
     <style>
-      /* Styles for the cookie banner */
+      /* Стили для ненавязчивого баннера */
       #cookie-banner {
         position: fixed;
         bottom: 10px;
@@ -78,27 +77,22 @@
       #cookie-banner button.reject {
         background: #6c757d;
       }
-      /* Ensure ad placeholder has a fixed size for the Leaderboard ad */
-      .adsbygoogle {
-        width: 728px;
-        height: 90px;
-      }
     </style>
-    <script type="module" crossorigin src="/assets/index-DA8XuhL3.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-EP2qLIf2.css">
   </head>
   <body>
     <div id="root"></div>
-    <!-- AdSense Ad Unit -->
+    <!-- Google AdSense Ad Slot -->
     <ins class="adsbygoogle"
          style="display:inline-block;width:728px;height:90px"
          data-ad-client="ca-pub-6717810154217301"
          data-ad-slot="9513676322"></ins>
     <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
+         (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
+    
+    <script type="module" src="/src/main.tsx"></script>
 
-    <!-- Cookie Consent Banner -->
+    <!-- Ненавязчивый баннер согласия -->
     <div id="cookie-banner">
       <p>We use cookies for analytics and ads. <a href="/privacy.html">Learn more</a>.</p>
       <button id="accept-cookies">Accept</button>
@@ -106,28 +100,28 @@
     </div>
 
     <script>
-      // Cookie banner logic with Consent Mode
+      // Логика баннера с Consent Mode
       document.addEventListener('DOMContentLoaded', () => {
         const banner = document.getElementById('cookie-banner');
         const acceptButton = document.getElementById('accept-cookies');
         const rejectButton = document.getElementById('reject-cookies');
 
-        // Show banner if user hasn't made a choice
+        // Показать баннер, если пользователь ещё не сделал выбор
         if (!localStorage.getItem('cookie-consent')) {
           banner.style.display = 'block';
-          console.log('Cookie banner displayed');
+          console.log('Banner displayed');
         } else {
-          console.log('Cookie banner skipped, consent already given:', localStorage.getItem('cookie-consent'));
+          console.log('Banner skipped, consent already given:', localStorage.getItem('cookie-consent'));
         }
 
-        // Accept cookies
+        // Принять cookies
         acceptButton.addEventListener('click', () => {
           setConsent(true);
           localStorage.setItem('cookie-consent', 'accepted');
           banner.style.display = 'none';
         });
 
-        // Reject cookies
+        // Отклонить cookies
         rejectButton.addEventListener('click', () => {
           setConsent(false);
           localStorage.setItem('cookie-consent', 'rejected');
