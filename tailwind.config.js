@@ -16,4 +16,11 @@ export default {
     },
   },
   plugins: [],
+  safelist: [
+    'keyboard-button',
+    'keyboard-button-primary',
+    'keyboard-button-success',
+    'keyboard-button-danger',
+    'animate-press'
+  ]
 };
