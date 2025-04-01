@@ -6,12 +6,12 @@ export default {
       keyframes: {
         press: {
           '0%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(2px)' },
+          '50%': { transform: 'translateY(4px)' },
           '100%': { transform: 'translateY(0)' }
         }
       },
       animation: {
-        press: 'press 0.1s ease-in-out'
+        press: 'press 0.08s cubic-bezier(0.2, 0.9, 0.3, 1)'
       }
     },
   },

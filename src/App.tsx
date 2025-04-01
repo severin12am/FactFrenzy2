@@ -252,7 +252,7 @@ function App() {
         <div className="flex justify-between items-center mb-6 sm:mb-8 bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4">
           <button
             onClick={() => setShowLeaderboard(!showLeaderboard)}
-            className="keyboard-button-primary flex items-center gap-2"
+            className="keyboard-button keyboard-button-primary flex items-center gap-2"
           >
             <Crown className="w-6 sm:w-8 h-6 sm:h-8" />
             <span>Leaderboard</span>
@@ -332,7 +332,7 @@ function App() {
                   <div className="w-full max-w-md">
                     <button
                       onClick={resetGame}
-                      className="keyboard-button-primary w-full text-base sm:text-lg"
+                      className="keyboard-button keyboard-button-primary w-full text-base sm:text-lg"
                     >
                       Play Again
                     </button>
@@ -341,7 +341,7 @@ function App() {
                     <div className="flex gap-2 sm:gap-3">
                       <button
                         onClick={handleCopy}
-                        className={`keyboard-button-success flex-1 flex items-center justify-center gap-2 sm:gap-3 ${copySuccess ? 'opacity-75' : ''}`}
+                        className={`keyboard-button keyboard-button-success flex-1 flex items-center justify-center gap-2 sm:gap-3 ${copySuccess ? 'opacity-75' : ''}`}
                       >
                         <Share2 className="w-5 sm:w-6 h-5 sm:h-6" />
                         {copySuccess ? 'Copied!' : 'Share'}
@@ -349,7 +349,7 @@ function App() {
                       <TwitterShareButton
                         url={shareUrl}
                         title={shareText}
-                        className="keyboard-button-primary flex-1 flex items-center justify-center"
+                        className="keyboard-button keyboard-button-primary flex-1 flex items-center justify-center"
                       >
                         <TwitterIcon size={24} round={true} />
                       </TwitterShareButton>
@@ -357,14 +357,14 @@ function App() {
                         url={shareUrl}
                         title={shareText}
                         separator=" "
-                        className="keyboard-button-primary flex-1 flex items-center justify-center"
+                        className="keyboard-button keyboard-button-primary flex-1 flex items-center justify-center"
                       >
                         <WhatsappIcon size={24} round={true} />
                       </WhatsappShareButton>
                       <FacebookShareButton
                         url={shareUrl}
                         quote={shareText}
-                        className="keyboard-button-primary flex-1 flex items-center justify-center"
+                        className="keyboard-button keyboard-button-primary flex-1 flex items-center justify-center"
                       >
                         <FacebookIcon size={24} round={true} />
                       </FacebookShareButton>
