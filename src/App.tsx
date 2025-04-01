@@ -380,7 +380,7 @@ function App() {
                     />
                     <button
                       onClick={() => updateLeaderboard(nameInput)}
-                      className="keyboard-button-primary w-full max-w-md text-base sm:text-lg"
+                      className="keyboard-button keyboard-button-primary w-full max-w-md text-base sm:text-lg"
                     >
                       Add me to Leaderboard
                     </button>
@@ -409,7 +409,7 @@ function App() {
                   <button
                     onClick={() => handleGuess(false)}
                     disabled={isAnswered}
-                    className={`keyboard-button-danger p-3 sm:p-4 text-base sm:text-xl font-semibold ${
+                    className={`keyboard-button keyboard-button-danger p-3 sm:p-4 text-base sm:text-xl font-semibold ${
                       isAnswered ? 'opacity-50 cursor-not-allowed' : ''
                     }`}
                   >
@@ -418,7 +418,7 @@ function App() {
                   <button
                     onClick={() => handleGuess(true)}
                     disabled={isAnswered}
-                    className={`keyboard-button-success p-3 sm:p-4 text-base sm:text-xl font-semibold ${
+                    className={`keyboard-button keyboard-button-success p-3 sm:p-4 text-base sm:text-xl font-semibold ${
                       isAnswered ? 'opacity-50 cursor-not-allowed' : ''
                     }`}
                   >
