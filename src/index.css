@@ -2,62 +2,67 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  .keyboard-button {
-    @apply relative px-6 py-3 rounded-lg font-semibold text-white shadow-lg transition-all duration-200;
-    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-    border: 1px solid #3a3a3a;
-  }
+.keyboard-button {
+  position: relative;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  color: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s;
+  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+  border: 1px solid #3a3a3a;
+}
 
-  .keyboard-button:active {
-    @apply animate-press;
-    background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-  }
+.keyboard-button:active {
+  transform: translateY(2px);
+  background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
 
-  .keyboard-button::before {
-    content: '';
-    @apply absolute inset-0 rounded-lg opacity-0 transition-opacity duration-200;
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
-  }
+.keyboard-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+}
 
-  .keyboard-button:hover::before {
-    @apply opacity-100;
-  }
+.keyboard-button:hover::before {
+  opacity: 1;
+}
 
-  .keyboard-button:disabled {
-    @apply opacity-50 cursor-not-allowed;
-    background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
-  }
+.keyboard-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
+}
 
-  /* Variants */
-  .keyboard-button-primary {
-    @apply keyboard-button;
-    background: linear-gradient(145deg, #4f46e5, #4338ca);
-    border: 1px solid #6366f1;
-  }
+.keyboard-button-primary {
+  background: linear-gradient(145deg, #4f46e5, #4338ca);
+  border: 1px solid #6366f1;
+}
 
-  .keyboard-button-primary:active {
-    background: linear-gradient(145deg, #4338ca, #4f46e5);
-  }
+.keyboard-button-primary:active {
+  background: linear-gradient(145deg, #4338ca, #4f46e5);
+}
 
-  .keyboard-button-success {
-    @apply keyboard-button;
-    background: linear-gradient(145deg, #22c55e, #16a34a);
-    border: 1px solid #34d399;
-  }
+.keyboard-button-success {
+  background: linear-gradient(145deg, #22c55e, #16a34a);
+  border: 1px solid #34d399;
+}
 
-  .keyboard-button-success:active {
-    background: linear-gradient(145deg, #16a34a, #22c55e);
-  }
+.keyboard-button-success:active {
+  background: linear-gradient(145deg, #16a34a, #22c55e);
+}
 
-  .keyboard-button-danger {
-    @apply keyboard-button;
-    background: linear-gradient(145deg, #ef4444, #dc2626);
-    border: 1px solid #f87171;
-  }
+.keyboard-button-danger {
+  background: linear-gradient(145deg, #ef4444, #dc2626);
+  border: 1px solid #f87171;
+}
 
-  .keyboard-button-danger:active {
-    background: linear-gradient(145deg, #dc2626, #ef4444);
-  }
+.keyboard-button-danger:active {
+  background: linear-gradient(145deg, #dc2626, #ef4444);
 }
