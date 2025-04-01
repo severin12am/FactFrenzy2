@@ -8,26 +8,41 @@
   border-radius: 0.5rem;
   font-weight: 600;
   color: white;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  transition: all 0.2s;
-  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-  border: 1px solid #3a3a3a;
+  transform: translateY(0);
+  transition: all 0.08s cubic-bezier(0.2, 0.9, 0.3, 1);
+  background: linear-gradient(180deg, #454545, #2a2a2a);
+  border: 1px solid #555;
+  box-shadow: 
+    0 4px 0 #111,
+    0 5px 5px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2),
+    inset 0 -2px 2px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  user-select: none;
+  outline: none;
 }
 
 .keyboard-button:active {
-  transform: translateY(2px);
-  background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  transform: translateY(4px);
+  transition-duration: 0.04s;
+  background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
+  border-color: #444;
+  box-shadow: 
+    0 0 0 #111,
+    0 0 2px rgba(0, 0, 0, 0.4),
+    inset 0 1px 5px rgba(0, 0, 0, 0.4),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.3);
 }
 
 .keyboard-button::before {
   content: '';
   position: absolute;
-  inset: 0;
-  border-radius: 0.5rem;
+  inset: 1px;
+  border-radius: 0.4rem;
   opacity: 0;
   transition: opacity 0.2s;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
 }
 
 .keyboard-button:hover::before {
@@ -37,32 +52,69 @@
 .keyboard-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
+  transform: none;
+  background: linear-gradient(180deg, #3a3a3a, #2a2a2a);
+  box-shadow: 
+    0 2px 0 #111,
+    0 3px 2px rgba(0, 0, 0, 0.2);
 }
 
 .keyboard-button-primary {
-  background: linear-gradient(145deg, #4f46e5, #4338ca);
-  border: 1px solid #6366f1;
+  background: linear-gradient(180deg, #6366f1, #4338ca);
+  border: 1px solid #818cf8;
+  box-shadow: 
+    0 4px 0 #3730a3,
+    0 5px 5px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 2px rgba(0, 0, 0, 0.2);
 }
 
 .keyboard-button-primary:active {
-  background: linear-gradient(145deg, #4338ca, #4f46e5);
+  background: linear-gradient(180deg, #4338ca, #3730a3);
+  border-color: #6366f1;
+  box-shadow: 
+    0 0 0 #312e81,
+    0 0 2px rgba(0, 0, 0, 0.4),
+    inset 0 1px 5px rgba(0, 0, 0, 0.4),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.3);
 }
 
 .keyboard-button-success {
-  background: linear-gradient(145deg, #22c55e, #16a34a);
-  border: 1px solid #34d399;
+  background: linear-gradient(180deg, #34d399, #059669);
+  border: 1px solid #6ee7b7;
+  box-shadow: 
+    0 4px 0 #047857,
+    0 5px 5px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 2px rgba(0, 0, 0, 0.2);
 }
 
 .keyboard-button-success:active {
-  background: linear-gradient(145deg, #16a34a, #22c55e);
+  background: linear-gradient(180deg, #059669, #047857);
+  border-color: #34d399;
+  box-shadow: 
+    0 0 0 #065f46,
+    0 0 2px rgba(0, 0, 0, 0.4),
+    inset 0 1px 5px rgba(0, 0, 0, 0.4),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.3);
 }
 
 .keyboard-button-danger {
-  background: linear-gradient(145deg, #ef4444, #dc2626);
-  border: 1px solid #f87171;
+  background: linear-gradient(180deg, #f87171, #dc2626);
+  border: 1px solid #fca5a5;
+  box-shadow: 
+    0 4px 0 #b91c1c,
+    0 5px 5px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 2px rgba(0, 0, 0, 0.2);
 }
 
 .keyboard-button-danger:active {
-  background: linear-gradient(145deg, #dc2626, #ef4444);
+  background: linear-gradient(180deg, #dc2626, #b91c1c);
+  border-color: #f87171;
+  box-shadow: 
+    0 0 0 #991b1b,
+    0 0 2px rgba(0, 0, 0, 0.4),
+    inset 0 1px 5px rgba(0, 0, 0, 0.4),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.3);
 }
