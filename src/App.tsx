@@ -440,19 +440,66 @@ function App() {
           </div>
         </div>
 
-        <div
-          className={`bg-gray-200 rounded-xl shadow-2xl p-3 sm:p-6 mt-6 sm:mt-8 ${
-            showLeaderboard ? 'col-span-1 sm:col-span-3' : 'col-span-1 sm:col-span-3'
-          }`}
-          style={{
-            width: mainPanelRef.current ? `${mainPanelRef.current.offsetWidth}px` : '100%',
-            height: mainPanelRef.current ? `${mainPanelRef.current.offsetHeight / 2}px` : 'auto',
-            minHeight: '150px',
-          }}
-        >
-          <p className="text-center text-gray-500 text-base sm:text-lg">
-            Ad Space (Placeholder)
-          </p>
+        <div className="grid grid-cols-1 gap-6 sm:gap-8 mt-6 sm:mt-8">
+          {/* Display Ad (Responsive) */}
+          <div
+            className="bg-gray-200 rounded-xl shadow-2xl p-3 sm:p-6"
+            style={{
+              minHeight: '250px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <ins
+              className="adsbygoogle"
+              style={{ display: 'block' }}
+              data-ad-client="ca-pub-6717810154217301"
+              data-ad-slot="responsive-slot"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+          </div>
+
+          {/* In-article Ad */}
+          <div
+            className="bg-gray-200 rounded-xl shadow-2xl p-3 sm:p-6"
+            style={{
+              minHeight: '250px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <ins
+              className="adsbygoogle"
+              style={{ display: 'block', textAlign: 'center' }}
+              data-ad-layout="in-article"
+              data-ad-format="fluid"
+              data-ad-client="ca-pub-6717810154217301"
+              data-ad-slot="in-article-slot"
+            ></ins>
+          </div>
+
+          {/* In-feed Ad */}
+          <div
+            className="bg-gray-200 rounded-xl shadow-2xl p-3 sm:p-6"
+            style={{
+              minHeight: '250px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <ins
+              className="adsbygoogle"
+              style={{ display: 'block' }}
+              data-ad-format="fluid"
+              data-ad-layout-key="-6t+ed+2i-1n-4w"
+              data-ad-client="ca-pub-6717810154217301"
+              data-ad-slot="in-feed-slot"
+            ></ins>
+          </div>
         </div>
       </div>
     </div>
